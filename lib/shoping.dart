@@ -1,31 +1,39 @@
 import 'package:flutter/material.dart';
 
-class Shopping extends StatelessWidget {
-  const Shopping({super.key});
+class Shopping extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _ShoppingState();
+}
 
+class _ShoppingState extends State<Shopping> {
+  int cart = 0;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
-          child: Container(
-            margin: const EdgeInsets.only(left: 15, right: 15, top: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                buildTopBar(),
-                const SizedBox(height: 24),
-                buildCashback(),
-                const SizedBox(height: 24),
-                buildServices(),
-                const SizedBox(height: 24),
-                buildSectionTitle("Special for you"),
-                buildSpecialCategory(),
-                const SizedBox(height: 24),
-                buildSectionTitle("Popular Product"),
-                buildPopularProducts(),
-              ],
-            ),
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(left: 15, right: 15, top: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    buildTopBar(),
+                    const SizedBox(height: 24),
+                    buildCashback(),
+                    const SizedBox(height: 24),
+                    buildServices(),
+                    const SizedBox(height: 24),
+                    buildSectionTitle("Special for you"),
+                  ],
+                ),
+              ),
+              buildSpecialCategory(),
+              const SizedBox(height: 24),
+              buildSectionTitle("Popular Product"),
+              buildPopularProducts(),
+            ],
           ),
         ),
         bottomNavigationBar: buildBottomNavigationBar(),
@@ -57,19 +65,23 @@ class Shopping extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 8),
-        Container(
-          height: 50,
-          width: 50,
-          decoration: BoxDecoration(
-            color: const Color(0xffe5e5e6),
-            shape: BoxShape.circle,
-          ),
-          child: IconButton(
-            color: Color(0xff503b96),
-            icon: Icon(Icons.shopping_cart_outlined),
-            onPressed: () {},
-          ),
-        ),
+        Badge(
+            label: Text("$cart", style: TextStyle(color: Colors.white)),
+            child: Container(
+                height: 50,
+                width: 50,
+                decoration: BoxDecoration(
+                  color: const Color(0xffe5e5e6),
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  color: Color(0xff503b96),
+                  icon: const Icon(Icons.notifications_outlined),
+                  onPressed: () {
+                    cart++;
+                    setState(() {});
+                  },
+                ))),
         const SizedBox(width: 8),
         Badge(
             label: const Text('3', style: TextStyle(color: Colors.white)),
@@ -212,7 +224,7 @@ class Shopping extends StatelessWidget {
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Image.asset("assets/images/logo.jpg",
-                      width: 120, height: 180, fit: BoxFit.cover)));
+                      width: 150, height: 180, fit: BoxFit.cover)));
         },
       ),
     );
@@ -258,7 +270,7 @@ class Shopping extends StatelessWidget {
 
   Widget buildProductCard({Widget? child}) {
     return Container(
-      width: 120,
+      width: 130,
       height: 200,
       margin: const EdgeInsets.only(left: 16),
       child: Center(child: child ?? const Icon(Icons.videogame_asset)),
