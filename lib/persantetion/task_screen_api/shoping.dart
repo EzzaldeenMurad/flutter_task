@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_task/core/models/product.dart';
+import 'package:flutter_task/core/view_models/product_vm.dart';
 
 class Shopping extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _ShoppingState();
 }
 
+ProductVM productVM = ProductVM();
+
 class _ShoppingState extends State<Shopping> {
   int cart = 0;
   @override
   Widget build(BuildContext context) {
+    productVM.getAllProducts();
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -215,19 +220,26 @@ class _ShoppingState extends State<Shopping> {
 
   Widget buildPopularProducts() {
     return SizedBox(
-      height: 200,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 3,
-        itemBuilder: (BuildContext context, int index) {
-          return buildProductCard(
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.asset("assets/images/logo.jpg",
-                      width: 150, height: 180, fit: BoxFit.cover)));
-        },
-      ),
-    );
+        height: 200,
+        child: FutureBuilder<List<Product>>(
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      return buildProductCard(
+                          product: snapshot.data, index: index);
+                    });
+              }
+            }
+            return const Center(
+              child: Text('Loading..'),
+            );
+          },
+          future: productVM.getAllProducts(),
+        ));
   }
 
   Widget buildCategoryCard(String title, String subtitle) {
@@ -268,12 +280,25 @@ class _ShoppingState extends State<Shopping> {
     );
   }
 
-  Widget buildProductCard({Widget? child}) {
-    return Container(
-      width: 130,
-      height: 200,
-      margin: const EdgeInsets.only(left: 16),
-      child: Center(child: child ?? const Icon(Icons.videogame_asset)),
+  Widget buildProductCard({product, index}) {
+    return Stack(
+      children: [
+        // Positioned(top: 5, child: Text('${product[index].title}')),
+        Container(
+          width: 150,
+          height: 200,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.grey.shade200,
+          ),
+          margin: const EdgeInsets.only(left: 16),
+          child: Center(
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(product[index].image,
+                      width: 150, height: 180, fit: BoxFit.cover))),
+        ),
+      ],
     );
   }
 

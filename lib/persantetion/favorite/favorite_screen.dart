@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_task/favorite/product.dart';
+import 'package:flutter_task/persantetion/favorite/product.dart';
 
 class FavoriteScreen extends StatefulWidget {
   @override
@@ -34,6 +34,24 @@ class FavoriteScreenState extends State<FavoriteScreen> {
       price: '\$52',
       soldOut: true,
       discount: 0,
+    ),
+    Product(
+      name: 'T-Shirt',
+      brand: '8Berries',
+      color: 'Black',
+      size: 'S',
+      price: '\$55',
+      soldOut: false,
+      discount: 30,
+    ),
+    Product(
+      name: 'T-Shirt',
+      brand: '8Berries',
+      color: 'Black',
+      size: 'S',
+      price: '\$55',
+      soldOut: false,
+      discount: 30,
     ),
     Product(
       name: 'T-Shirt',
@@ -254,7 +272,7 @@ class ProductCard extends StatelessWidget {
           ),
           if (!product.soldOut)
             Positioned(
-              bottom: 50,
+              bottom: 70,
               right: 0,
               child: Container(
                 decoration: BoxDecoration(
@@ -270,7 +288,7 @@ class ProductCard extends StatelessWidget {
             ),
           if (product.soldOut)
             Positioned(
-              bottom: 75,
+              bottom: 100,
               child: Container(
                 width: 185,
                 height: 50,
@@ -300,7 +318,7 @@ class ProductCard extends StatelessWidget {
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                 child: Text(
-                  '${product.discount}%',
+                  "${product.discount}%",
                   style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
